@@ -1,0 +1,31 @@
+<div class="container">
+  <h1 class="my-4"><%= @list.name %></h1>
+
+  <ul class="list-group">
+    <% @list.bookmarks.each do |bookmark| %>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <%= image_tag bookmark.movie.poster_url, class: 'img-thumbnail me-3', size: "50x75" %>
+          <div>
+            <strong><%= bookmark.movie.title %></strong><br>
+            <%= bookmark.comment %>
+          </div>
+        </div>
+        <%= link_to 'Delete', bookmark_path(bookmark), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+      </li>
+    <% end %>
+  </ul>
+
+  <div class="mt-4">
+    <%= simple_form_for [@list, @bookmark], html: { class: 'mb-4' } do |f| %>
+      <div class="form-group">
+        <%= f.association :movie, collection: @movies, prompt: 'Select a movie', label_html: { class: 'form-label' }, input_html: { class: 'form-control' } %>
+      </div>
+      <div class="form-group">
+        <%= f.input :comment, label_html: { class: 'form-label' }, input_html: { class: 'form-control' } %>
+      </div>
+      <%= f.submit 'Add movie', class: 'btn btn-primary' %>
+    <% end %>
+    <%= link_to 'Back', lists_path, class: 'btn btn-secondary' %>
+  </div>
+</div>
